@@ -1,0 +1,1 @@
+export * from "@/widgets/table/table-card"; s

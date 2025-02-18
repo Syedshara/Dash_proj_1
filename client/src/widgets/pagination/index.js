@@ -1,0 +1,1 @@
+export * from "@/widgets/pagination/pagination-table";

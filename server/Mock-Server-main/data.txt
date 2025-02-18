@@ -1,0 +1,7 @@
+{
+  "totalUsers": 100,
+  "bookings": 50,
+  "revenue": 10000,
+  "followers": 500
+}
+
