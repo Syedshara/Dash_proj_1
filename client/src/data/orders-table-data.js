@@ -1,6 +1,6 @@
 import { useFetch } from "@/hooks/useFetch";
 
-const apiUrl = `http://103.91.186.65:30045/service/get-all-orders`;
+const apiUrl = `${import.meta.env.VITE_API_BASE_URL}/orders`;
 
 
 const transformOrders = (apiResponse) => ({
