@@ -4,74 +4,66 @@ import { chartsConfig } from "@/configs";
 
 const apiUrl = "http://127.0.0.1:3004/api/chart-data";
 
-export const statisticsChartsData = () => {
-  const { data, loading, error } = useFetch(apiUrl);
-
-  return useMemo(() => {
-    if (!data || loading || error) return [];
-
-    const websiteViewsChart = {
+const transformData = (data) => [
+  {
+    color: "blue",
+    title: data?.websiteViewsTitle || "Website View",
+    description: data?.websiteViewsDescription || "Last Campaign Performance",
+    footer: data?.websiteViewsFooter || "campaign sent 2 days ago",
+    chart: {
       type: "bar",
       height: 220,
-      series: [{ name: "Views", data: data.websiteViews || [] }],
+      series: [{ name: "Views", data: data?.websiteViews || [] }],
       options: {
         ...chartsConfig,
         colors: "#fff",
         plotOptions: { bar: { columnWidth: "15%", borderRadius: 3 } },
-        xaxis: { ...chartsConfig.xaxis, categories: data.categories || [] },
+        xaxis: { ...chartsConfig.xaxis, categories: data?.categories || [] },
       },
-    };
-
-    const dailySalesChart = {
+    },
+  },
+  {
+    color: "green",
+    title: data?.dailySalesTitle || "Daily Sales",
+    description: data?.dailySalesDescription || "15% increase in today sales",
+    footer: data?.dailySalesFooter || "updated 4 min ago",
+    chart: {
       type: "line",
       height: 220,
-      series: [{ name: "Sales", data: data.dailySales || [] }],
+      series: [{ name: "Sales", data: data?.dailySales || [] }],
       options: {
         ...chartsConfig,
         colors: ["#fff"],
         stroke: { lineCap: "round" },
         markers: { size: 5 },
-        xaxis: { ...chartsConfig.xaxis, categories: data.months || [] },
+        xaxis: { ...chartsConfig.xaxis, categories: data?.months || [] },
       },
-    };
-
-    const completedTaskChart = {
+    },
+  },
+  {
+    color: "black",
+    title: data?.completedTasksTitle || "Completed Tasks",
+    description: data?.completedTasksDescription || "Last Campaign Performance",
+    footer: data?.completedTasksFooter || "just updated",
+    chart: {
       type: "line",
       height: 220,
-      series: [{ name: "Tasks", data: data.completedTasks || [] }],
+      series: [{ name: "Tasks", data: data?.completedTasks || [] }],
       options: {
         ...chartsConfig,
         colors: ["#fff"],
         stroke: { lineCap: "round" },
         markers: { size: 5 },
-        xaxis: { ...chartsConfig.xaxis, categories: data.months || [] },
+        xaxis: { ...chartsConfig.xaxis, categories: data?.months || [] },
       },
-    };
+    },
+  },
+];
 
-    return [
-      {
-        color: "blue",
-        title: data.websiteViewsTitle || "Website View",
-        description: data.websiteViewsDescription || "Last Campaign Performance",
-        footer: data.websiteViewsFooter || "campaign sent 2 days ago",
-        chart: websiteViewsChart,
-      },
-      {
-        color: "green",
-        title: data.dailySalesTitle || "Daily Sales",
-        description: data.dailySalesDescription || "15% increase in today sales",
-        footer: data.dailySalesFooter || "updated 4 min ago",
-        chart: dailySalesChart,
-      },
-      {
-        color: "black",
-        title: data.completedTasksTitle || "Completed Tasks",
-        description: data.completedTasksDescription || "Last Campaign Performance",
-        footer: data.completedTasksFooter || "just updated",
-        chart: completedTaskChart,
-      },
-    ];
-  }, [data, loading, error]);
+export const statisticsChartsData = () => {
+  const { data, loading, error } = useFetch(apiUrl, {}, transformData);
+
+  return useMemo(() => ({ data, loading, error }), [data, loading, error]);
 };
 
 export default statisticsChartsData;

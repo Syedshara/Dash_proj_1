@@ -1,35 +1,44 @@
 import { useState, useEffect, useMemo } from "react";
-import PropTypes from "prop-types";
 
-const useFetch = (url) => {
-    const [data, setData] = useState([]);
+export const useFetch = (url, options = {}, transformData = (data) => data) => {
+    const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        let isMounted = true;
+
         const fetchData = async () => {
+            setLoading(true);
+            setError(null);
             try {
-                const response = await fetch(url);
+                const response = await fetch(url, options);
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 const result = await response.json();
-                setData(result);
+                if (isMounted) {
+                    setData(transformData(result));
+                }
             } catch (err) {
-                setError(err.message);
+                if (isMounted) {
+                    setError(err.message);
+                }
             } finally {
-                setLoading(false);
+                if (isMounted) {
+                    setLoading(false);
+                }
             }
         };
 
         fetchData();
-    }, [url]);
+
+        return () => {
+            isMounted = false;
+        };
+    }, [url, JSON.stringify(options)]);
 
     return useMemo(() => ({ data, loading, error }), [data, loading, error]);
-};
-
-useFetch.propTypes = {
-    url: PropTypes.string.isRequired,
 };
 
 export default useFetch;

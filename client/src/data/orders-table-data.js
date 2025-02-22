@@ -1,214 +1,24 @@
-export const ordersTableData = [
-  {
-    id: 1,
-    name: "Product A",
-    address: "123 Main St, City, Country",
-    price: "$25.00",
-    status: "In Stock",
-  },
-  {
-    id: 2,
-    name: "Product B",
-    address: "456 Oak St, City, Country",
-    price: "$40.00",
-    status: "Out of Stock",
-  },
-  {
-    id: 3,
-    name: "Product C",
-    address: "789 Pine St, City, Country",
-    price: "$15.00",
-    status: "In Stock",
-  },
-  {
-    id: 4,
-    name: "Product D",
-    address: "101 Maple St, City, Country",
-    price: "$30.00",
-    status: "In Stock",
-  },
-  {
-    id: 5,
-    name: "Product E",
-    address: "202 Birch St, City, Country",
-    price: "$55.00",
-    status: "Out of Stock",
-  },
-  {
-    id: 6,
-    name: "Product F",
-    address: "303 Cedar St, City, Country",
-    price: "$20.00",
-    status: "In Stock",
-  },
-  {
-    id: 7,
-    name: "Product G",
-    address: "404 Elm St, City, Country",
-    price: "$45.00",
-    status: "In Stock",
-  },
-  {
-    id: 8,
-    name: "Product H",
-    address: "505 Walnut St, City, Country",
-    price: "$60.00",
-    status: "Out of Stock",
-  },
-  {
-    id: 9,
-    name: "Product I",
-    address: "606 Cherry St, City, Country",
-    price: "$35.00",
-    status: "In Stock",
-  },
-  {
-    id: 10,
-    name: "Product J",
-    address: "707 Ash St, City, Country",
-    price: "$50.00",
-    status: "In Stock",
-  },
-  {
-    id: 11,
-    name: "Product K",
-    address: "808 Fir St, City, Country",
-    price: "$70.00",
-    status: "Out of Stock",
-  },
-  {
-    id: 12,
-    name: "Product L",
-    address: "909 Spruce St, City, Country",
-    price: "$28.00",
-    status: "In Stock",
-  },
-  {
-    id: 13,
-    name: "Product M",
-    address: "111 Poplar St, City, Country",
-    price: "$38.00",
-    status: "In Stock",
-  },
-  {
-    id: 14,
-    name: "Product N",
-    address: "222 Willow St, City, Country",
-    price: "$48.00",
-    status: "Out of Stock",
-  },
-  {
-    id: 15,
-    name: "Product O",
-    address: "333 Cypress St, City, Country",
-    price: "$18.00",
-    status: "In Stock",
-  },
-  {
-    id: 16,
-    name: "Product P",
-    address: "444 Redwood St, City, Country",
-    price: "$22.00",
-    status: "In Stock",
-  },
-  {
-    id: 17,
-    name: "Product Q",
-    address: "555 Magnolia St, City, Country",
-    price: "$62.00",
-    status: "Out of Stock",
-  },
-  {
-    id: 18,
-    name: "Product R",
-    address: "666 Dogwood St, City, Country",
-    price: "$47.00",
-    status: "In Stock",
-  },
-  {
-    id: 19,
-    name: "Product S",
-    address: "777 Hickory St, City, Country",
-    price: "$33.00",
-    status: "In Stock",
-  },
-  {
-    id: 20,
-    name: "Product T",
-    address: "888 Sycamore St, City, Country",
-    price: "$55.00",
-    status: "Out of Stock",
-  },
-  {
-    id: 21,
-    name: "Product U",
-    address: "999 Palm St, City, Country",
-    price: "$41.00",
-    status: "In Stock",
-  },
-  {
-    id: 22,
-    name: "Product V",
-    address: "1010 Acacia St, City, Country",
-    price: "$32.00",
-    status: "In Stock",
-  },
-  {
-    id: 23,
-    name: "Product W",
-    address: "1111 Juniper St, City, Country",
-    price: "$29.00",
-    status: "Out of Stock",
-  },
-  {
-    id: 24,
-    name: "Product X",
-    address: "1212 Alder St, City, Country",
-    price: "$37.00",
-    status: "In Stock",
-  },
-  {
-    id: 25,
-    name: "Product Y",
-    address: "1313 Chestnut St, City, Country",
-    price: "$52.00",
-    status: "In Stock",
-  },
-  {
-    id: 26,
-    name: "Product Z",
-    address: "1414 Beech St, City, Country",
-    price: "$64.00",
-    status: "Out of Stock",
-  },
-  {
-    id: 27,
-    name: "Product AA",
-    address: "1515 Locust St, City, Country",
-    price: "$58.00",
-    status: "In Stock",
-  },
-  {
-    id: 28,
-    name: "Product BB",
-    address: "1616 Aspen St, City, Country",
-    price: "$49.00",
-    status: "In Stock",
-  },
-  {
-    id: 29,
-    name: "Product CC",
-    address: "1717 Mulberry St, City, Country",
-    price: "$44.00",
-    status: "Out of Stock",
-  },
-  {
-    id: 30,
-    name: "Product DD",
-    address: "1818 Holly St, City, Country",
-    price: "$39.00",
-    status: "In Stock",
-  },
-];
+import { useFetch } from "@/hooks/useFetch";
+
+const apiUrl = `http://103.91.186.65:30045/service/get-all-orders`;
+
+
+const transformOrders = (apiResponse) => ({
+  orders: apiResponse.content.map(o => ({
+    id: o.id,
+    phone: o.phone,
+    name: o.customerName,
+    address: o.address,
+    postcode: o.postcode,
+    price: o.price,
+    status: o.status,
+  })),
+  totalPages: apiResponse.totalPages,
+  totalRecords: apiResponse.totalElements,
+});
+
+export const ordersTableData = (page = 1, size = 10) => {
+  return useFetch(`${apiUrl}?page=${page}&size=${size}`, {}, transformOrders);
+};
 
 export default ordersTableData;

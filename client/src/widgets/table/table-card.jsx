@@ -23,7 +23,7 @@ export const OverlayCard = ({ rowData, onClose, onSave }) => {
         >
             <Card className="relative w-96 p-4 bg-white shadow-lg rounded-lg" onClick={(e) => e.stopPropagation()}>
 
-                <CardHeader color="gray" className="p-4 text-white" floated={true}>
+                <CardHeader color="gray" className="p-4 text-white " floated={true}>
                     <Typography variant="h6">Edit Row Details</Typography>
                 </CardHeader>
 
@@ -34,7 +34,7 @@ export const OverlayCard = ({ rowData, onClose, onSave }) => {
                                 value={value}
                                 label={key}
                                 onChange={(e) => handleChange(e, key)}
-                                className="border border-gray-300 px-2 py-1 rounded-md w-full"
+                                className="border border-gray-300 px-2 py-4 rounded-md w-full"
                             />
                         </div>
                     ))}

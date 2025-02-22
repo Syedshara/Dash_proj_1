@@ -22,7 +22,7 @@ import { StatisticsChart } from "@/widgets/charts";
 import {
   statisticsCardsData,
   statisticsChartsData,
-  projectsTableData,
+  customersTableData,
   ordersOverviewData,
 } from "@/data";
 import { CheckCircleIcon, ClockIcon } from "@heroicons/react/24/solid";
@@ -30,6 +30,7 @@ import { CheckCircleIcon, ClockIcon } from "@heroicons/react/24/solid";
 export function Home() {
   const cardData = statisticsCardsData();
   const chartData = statisticsChartsData();
+  const customersData = customersTableData();
   return (
     <div className="mt-12">
       <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
@@ -108,7 +109,7 @@ export function Home() {
             <table className="w-full min-w-[640px] table-auto">
               <thead>
                 <tr>
-                  {["companies", "members", "budget", "completion"].map(
+                  {["ID", "Name", "Address", "Phone", "Pincode"].map(
                     (el) => (
                       <th
                         key={el}
@@ -126,64 +127,54 @@ export function Home() {
                 </tr>
               </thead>
               <tbody>
-                {projectsTableData.map(
-                  ({ img, name, members, budget, completion }, key) => {
+                {customersData.map(
+                  ({ ID, Name, Address, Phone, Pincode }, key) => {
                     const className = `py-3 px-5 ${key === projectsTableData.length - 1
                       ? ""
                       : "border-b border-blue-gray-50"
                       }`;
 
                     return (
-                      <tr key={name}>
+                      <tr key={ID}>
                         <td className={className}>
                           <div className="flex items-center gap-4">
-                            <Avatar src={img} alt={name} size="sm" />
                             <Typography
                               variant="small"
                               color="blue-gray"
                               className="font-bold"
                             >
-                              {name}
+                              {ID}
                             </Typography>
                           </div>
                         </td>
                         <td className={className}>
-                          {members.map(({ img, name }, key) => (
-                            <Tooltip key={name} content={name}>
-                              <Avatar
-                                src={img}
-                                alt={name}
-                                size="xs"
-                                variant="circular"
-                                className={`cursor-pointer border-2 border-white ${key === 0 ? "" : "-ml-2.5"
-                                  }`}
-                              />
-                            </Tooltip>
-                          ))}
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-bold"
+                          >
+                            {Name}
+                          </Typography>
+
                         </td>
                         <td className={className}>
                           <Typography
                             variant="small"
                             className="text-xs font-medium text-blue-gray-600"
                           >
-                            {budget}
+                            {Address}
                           </Typography>
                         </td>
                         <td className={className}>
-                          <div className="w-10/12">
-                            <Typography
-                              variant="small"
-                              className="mb-1 block text-xs font-medium text-blue-gray-600"
-                            >
-                              {completion}%
-                            </Typography>
-                            <Progress
-                              value={completion}
-                              variant="gradient"
-                              color={completion === 100 ? "green" : "blue"}
-                              className="h-1"
-                            />
-                          </div>
+
+                          <Typography
+                            variant="small"
+                            className="mb-1 block text-xs font-medium text-blue-gray-600"
+                          >
+                            {Pincode}
+                          </Typography>
+
+
                         </td>
                       </tr>
                     );

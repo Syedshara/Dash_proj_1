@@ -1,1 +1,1 @@
-export * from "@/widgets/table/table-card"; s
+export * from "@/widgets/table/table-card"; 
