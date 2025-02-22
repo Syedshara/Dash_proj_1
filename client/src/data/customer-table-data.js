@@ -1,12 +1,12 @@
 import { useFetch } from "@/hooks/useFetch";
 
-const apiUrl = "http://127.0.0.1:3002/api/customers";
+const apiUrl = "http://103.91.186.65:30045/service/get-all-customers";
 
 const transformCustomers = (apiResponse) => ({
   customers: apiResponse.content.map(c => ({
     id: c.id,
     phone: c.phone,
-    name: c.customerName,
+    name: c.firstName + " " + (c.lastName === null ? "" : c.lastName),
     address: c.address,
     postcode: c.postcode,
   })),

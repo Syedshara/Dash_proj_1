@@ -61,9 +61,9 @@ const transformData = (data) => [
 ];
 
 export const statisticsChartsData = () => {
-  const { data, loading, error } = useFetch(apiUrl, {}, transformData);
+  const { data } = useFetch(apiUrl, {}, transformData);
 
-  return useMemo(() => ({ data, loading, error }), [data, loading, error]);
+  return useMemo(() => data || [], [data]);
 };
 
 export default statisticsChartsData;

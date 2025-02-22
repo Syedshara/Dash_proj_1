@@ -30,7 +30,9 @@ import { CheckCircleIcon, ClockIcon } from "@heroicons/react/24/solid";
 export function Home() {
   const cardData = statisticsCardsData();
   const chartData = statisticsChartsData();
-  const customersData = customersTableData();
+  const { data, loading, error } = customersTableData();
+  const { customers = [], totalPages = 1, totalRecords = 0 } = data || {};
+  console.log(customers);
   return (
     <div className="mt-12">
       <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
@@ -109,7 +111,7 @@ export function Home() {
             <table className="w-full min-w-[640px] table-auto">
               <thead>
                 <tr>
-                  {["ID", "Name", "Address", "Phone", "Pincode"].map(
+                  {["ID", "Name", "Phone", "PostCode"].map(
                     (el) => (
                       <th
                         key={el}
@@ -127,59 +129,14 @@ export function Home() {
                 </tr>
               </thead>
               <tbody>
-                {customersData.map(
-                  ({ ID, Name, Address, Phone, Pincode }, key) => {
-                    const className = `py-3 px-5 ${key === projectsTableData.length - 1
-                      ? ""
-                      : "border-b border-blue-gray-50"
-                      }`;
-
-                    return (
-                      <tr key={ID}>
-                        <td className={className}>
-                          <div className="flex items-center gap-4">
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-bold"
-                            >
-                              {ID}
-                            </Typography>
-                          </div>
-                        </td>
-                        <td className={className}>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-bold"
-                          >
-                            {Name}
-                          </Typography>
-
-                        </td>
-                        <td className={className}>
-                          <Typography
-                            variant="small"
-                            className="text-xs font-medium text-blue-gray-600"
-                          >
-                            {Address}
-                          </Typography>
-                        </td>
-                        <td className={className}>
-
-                          <Typography
-                            variant="small"
-                            className="mb-1 block text-xs font-medium text-blue-gray-600"
-                          >
-                            {Pincode}
-                          </Typography>
-
-
-                        </td>
-                      </tr>
-                    );
-                  }
-                )}
+                {customers.map(({ id, name, phone, postcode }) => (
+                  <tr key={id}>
+                    <td className="py-3 px-5 border-b">{id}</td>
+                    <td className="py-3 px-5 border-b">{name}</td>
+                    <td className="py-3 px-5 border-b">{phone}</td>
+                    <td className="py-3 px-5 border-b">{postcode}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </CardBody>
