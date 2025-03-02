@@ -44,7 +44,7 @@ export const OverlayCard = ({ rowID, onClose }) => {
             className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50 min-h-full min-w-full"
             onClick={handleBackgroundClick}
         >
-            <Card className="relative max-w-xs md:max-w-xl lg:max-w-2xl pb-5 max-h-[95vh] overflow-y-auto space-y-4 px-0 md:px-2 scrollbar-hide snap-y snap-mandatory bg-white shadow-2xl rounded-lg">
+            <Card className="relative max-w-xs md:max-w-xl lg:max-w-2xl pb-5 max-h-[90vh] overflow-y-auto space-y-4 px-0 md:px-2 scrollbar-hide snap-y snap-mandatory bg-white shadow-2xl rounded-lg">
                 <CardHeader
                     variant="gradient"
                     color="blue-gray"
