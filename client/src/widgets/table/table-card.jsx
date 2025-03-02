@@ -35,7 +35,7 @@ export const OverlayCard = ({ rowID, onClose }) => {
     return (
         <div
             id="overlay-background"
-            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50   "
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50  min-h-full min-w-full  "
             onClick={handleBackgroundClick}
         >
             <Card className="relative max-w-xs md:max-w-xl lg:max-w-2xl pb-5 max-h-[95vh] overflow-y-auto  space-y-4 px-0 md:px-2scrollbar-hide snap-y snap-mandatory  bg-white shadow-2xl rounded-lg ">
@@ -76,7 +76,7 @@ export const OverlayCard = ({ rowID, onClose }) => {
 
                                 <div ref={sliderRef} className="flex overflow-hidden overflow-x-auto space-x-4 px-12 scrollbar-hide snap-x snap-mandatory " >
                                     {products.map((product, index) => (
-                                        <Card key={index} className="min-w-[220px] max-h-44 bg-gray-100 border p-1 rounded-lg shadow-lg ">
+                                        <Card key={index} className="min-w-[220px]  bg-gray-100 border p-1 rounded-lg shadow-lg ">
                                             <CardBody>
                                                 <Typography className="text-[12px] font-bold uppercase p-1 text-blue-gray-700">
                                                     <strong>Product Name:</strong> {product.productNameEN}
