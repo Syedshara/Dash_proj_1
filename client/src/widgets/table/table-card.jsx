@@ -1,6 +1,6 @@
+import { useEffect, useRef } from "react";
 import { Card, CardHeader, CardBody, Typography } from "@material-tailwind/react";
 import { useFetch } from "@/hooks/useFetch";
-import { useRef } from "react";
 
 export const OverlayCard = ({ rowID, onClose }) => {
     const API_BASE_URL = import.meta.env.VITE_API_SERV_BASE_URL;
@@ -8,8 +8,17 @@ export const OverlayCard = ({ rowID, onClose }) => {
     const { data, loading, error } = useFetch(url);
     const sliderRef = useRef(null);
 
+    useEffect(() => {
+        document.body.classList.add("overflow-hidden");
+        return () => {
+            document.body.classList.remove("overflow-hidden");
+        };
+    }, []);
+
     const handleBackgroundClick = (e) => {
-        if (e.target.id === "overlay-background") onClose();
+        if (e.target.id === "overlay-background") {
+            onClose();
+        }
     };
 
     if (error) return <div>Error: {error}</div>;
@@ -17,19 +26,37 @@ export const OverlayCard = ({ rowID, onClose }) => {
 
     const products = Array.isArray(data.productDetails) ? data.productDetails : [];
 
-    const scroll = (direction) => {
+    const scrollLeft = () => {
         if (sliderRef.current) {
-            sliderRef.current.scrollBy({ left: direction * 250, behavior: "smooth" });
+            sliderRef.current.scrollBy({ left: -250, behavior: "smooth" });
+        }
+    };
+
+    const scrollRight = () => {
+        if (sliderRef.current) {
+            sliderRef.current.scrollBy({ left: 250, behavior: "smooth" });
         }
     };
 
     return (
-        <div id="overlay-background" className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50" onClick={handleBackgroundClick}>
-            <Card className="relative max-w-xs md:max-w-xl lg:max-w-2xl pb-5 max-h-[95vh] overflow-y-auto scrollbar-hide snap-y snap-mandatory bg-white shadow-2xl rounded-lg">
-                <CardHeader variant="gradient" color="blue-gray" floated={false} className="text-white relative rounded-t-lg shadow-md text-center bg-gradient-to-br from-blue-gray-900 to-blue-gray-700 min-h-[50px] flex items-center justify-center">
-                    <Typography variant="h6" className="text-white text-xl font-semibold">Order Details</Typography>
+        <div
+            id="overlay-background"
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50 min-h-full min-w-full"
+            onClick={handleBackgroundClick}
+        >
+            <Card className="relative max-w-xs md:max-w-xl lg:max-w-2xl pb-5 max-h-[95vh] overflow-y-auto space-y-4 px-0 md:px-2 scrollbar-hide snap-y snap-mandatory bg-white shadow-2xl rounded-lg">
+                <CardHeader
+                    variant="gradient"
+                    color="blue-gray"
+                    floated={false}
+                    className="text-white relative rounded-t-lg shadow-md text-center bg-gradient-to-br from-blue-gray-900 to-blue-gray-700 min-h-[50px] flex items-center justify-center"
+                >
+                    <Typography variant="h6" className="text-white text-xl font-semibold">
+                        Order Details
+                    </Typography>
                 </CardHeader>
-                <CardBody className="p-0 md:p-4 pt-4 scrollbar-hide">
+
+                <CardBody className="p-0 md:p-4 pt-4">
                     <div className="grid grid-cols-2 gap-x-6 gap-y-0 px-10 border-b pb-4">
                         {Object.entries(data).map(([key, value]) => (
                             key !== "productDetails" && (
@@ -40,25 +67,42 @@ export const OverlayCard = ({ rowID, onClose }) => {
                             )
                         ))}
                     </div>
+
                     {products.length > 0 && (
                         <div className="mt-6">
-                            <Typography className="text-lg font-semibold text-blue-gray-700 text-start ml-4 mb-3">Products Details :</Typography>
+                            <Typography className="text-lg font-semibold text-blue-gray-700 text-start ml-4 mb-3">
+                                Products Details:
+                            </Typography>
+
                             <div className="relative flex items-center">
-                                <button onClick={() => scroll(-1)} className="text-xl p-2 absolute left-0 z-10 bg-gray-300 rounded-full shadow-md opacity-60">◀</button>
-                                <div ref={sliderRef} className="flex overflow-x-auto space-x-4 px-12 scrollbar-hide snap-x snap-mandatory ">
+                                <button onClick={scrollLeft} className="text-xl p-2 absolute left-0 z-10 bg-gray-300 rounded-full shadow-md opacity-60">
+                                    ◀
+                                </button>
+
+                                <div ref={sliderRef} className="flex overflow-hidden overflow-x-auto space-x-4 px-12 scrollbar-hide snap-x snap-mandatory">
                                     {products.map((product, index) => (
-                                        <Card key={index} className="min-w-[220px] bg-gray-100 border p-0 rounded-lg shadow-lg ">
+                                        <Card key={index} className="min-w-[220px] bg-gray-100 border p-1 rounded-lg shadow-lg">
                                             <CardBody>
-                                                {Object.entries(product).map(([key, value]) => (
-                                                    <Typography key={key} className="text-[12px] font-bold uppercase p-1 text-blue-gray-700">
-                                                        <strong>{key.replace(/([A-Z])/g, ' $1').trim()}:</strong> {value}
-                                                    </Typography>
-                                                ))}
+                                                <Typography className="text-[12px] font-bold uppercase p-1 text-blue-gray-700">
+                                                    <strong>Product Name:</strong> {product.productNameEN}
+                                                </Typography>
+                                                <Typography className="text-[12px] font-bold uppercase p-1 text-blue-gray-700">
+                                                    <strong>Price:</strong> {product.price}
+                                                </Typography>
+                                                <Typography className="text-[12px] font-bold uppercase p-1 text-blue-gray-700">
+                                                    <strong>Weight:</strong> {product.weight}g
+                                                </Typography>
+                                                <Typography className="text-[12px] font-bold uppercase p-1 text-blue-gray-700">
+                                                    <strong>Quantity:</strong> {product.quantity}
+                                                </Typography>
                                             </CardBody>
                                         </Card>
                                     ))}
                                 </div>
-                                <button onClick={() => scroll(1)} className="text-xl p-2 absolute right-0 z-10 bg-gray-300 rounded-full shadow-md opacity-60">▶</button>
+
+                                <button onClick={scrollRight} className="text-xl p-2 absolute right-0 z-10 bg-gray-300 rounded-full shadow-md opacity-60">
+                                    ▶
+                                </button>
                             </div>
                         </div>
                     )}
@@ -67,5 +111,3 @@ export const OverlayCard = ({ rowID, onClose }) => {
         </div>
     );
 };
-
-export default OverlayCard;
