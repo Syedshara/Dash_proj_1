@@ -21,7 +21,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
   return (
     <aside
       className={`${sidenavTypes[sidenavType]} ${openSidenav ? "translate-x-0" : "-translate-x-80"
-        } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)]  w-48 md:w-72 rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100`}
+        } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)]  w-56 md:w-72 rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100`}
     >
       <div
         className={`relative`}
@@ -30,7 +30,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
           <Typography
             variant="h6"
             color={sidenavType === "dark" ? "white" : "blue-gray"}
-            className="mt-4 md:mt-0 text-xs md:text-xl"
+            className="mt-4 md:mt-0 text-md md:text-xl"
 
           >
             {brandName}
