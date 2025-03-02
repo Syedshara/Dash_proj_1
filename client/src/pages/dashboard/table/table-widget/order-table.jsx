@@ -4,7 +4,6 @@ import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
 import { ordersTableData } from "@/data";
 import { OverlayCard } from "@/widgets/table/table-card";
 
-
 export const OrdersTable = () => {
     const [ordersPage, setOrdersPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -12,27 +11,30 @@ export const OrdersTable = () => {
     const [selectedRow, setSelectedRow] = useState(null);
     const [isTransitioning, setIsTransitioning] = useState(false);
 
-    const tableRef = useRef(null);
     const { data } = ordersTableData(ordersPage, rowsPerPage);
     const { orders = [], totalPages = 1, totalRecords = 0 } = data || {};
 
     const handleSort = (key) => {
-        setSortConfig((prevConfig) => ({
+        setSortConfig((prev) => ({
             key,
-            direction: prevConfig.key === key && prevConfig.direction === "ascending" ? "descending" : "ascending",
+            direction: prev.key === key && prev.direction === "ascending" ? "descending" : "ascending",
         }));
     };
 
     const sortedOrders = [...orders].sort((a, b) => {
         if (!sortConfig.key) return 0;
-        if (a[sortConfig.key] < b[sortConfig.key]) return sortConfig.direction === "ascending" ? -1 : 1;
-        if (a[sortConfig.key] > b[sortConfig.key]) return sortConfig.direction === "ascending" ? 1 : -1;
-        return 0;
-    });
 
-    const handleEditClick = (rowData) => {
-        setSelectedRow(rowData);
-    };
+        const valueA = a[sortConfig.key];
+        const valueB = b[sortConfig.key];
+
+        if (typeof valueA === "number" && typeof valueB === "number") {
+            return sortConfig.direction === "ascending" ? valueA - valueB : valueB - valueA;
+        }
+
+        return sortConfig.direction === "ascending"
+            ? String(valueA).localeCompare(String(valueB))
+            : String(valueB).localeCompare(String(valueA));
+    });
 
 
     const handlePageChange = (newPage) => {
@@ -50,7 +52,7 @@ export const OrdersTable = () => {
                     <Typography variant="h6" color="white">Orders Table</Typography>
                 </CardHeader>
                 <CardBody>
-                    <div ref={tableRef} className="overflow-y-auto" style={{ maxHeight: "400px" }}>
+                    <div className="overflow-y-auto" style={{ maxHeight: "400px" }}>
                         <table className="w-full min-w-[640px] table-auto">
                             <thead className="sticky top-0 bg-gray-100 z-10">
                                 <tr>
@@ -58,13 +60,11 @@ export const OrdersTable = () => {
                                         <th key={el} className="border-b py-3 px-5 text-left cursor-pointer" onClick={() => handleSort(el.toLowerCase())}>
                                             <button className="flex items-center gap-1">
                                                 <Typography className="text-[12px] font-bold uppercase p-2 text-blue-gray-400">{el}</Typography>
-                                                {sortConfig.key === el.toLowerCase() && (
-                                                    sortConfig.direction === "ascending" ? <ChevronUpIcon className="w-4 h-4" /> : <ChevronDownIcon className="w-4 h-4" />
-                                                )}
+                                                {sortConfig.key === el.toLowerCase() && (sortConfig.direction === "ascending" ? <ChevronUpIcon className="w-4 h-4" /> : <ChevronDownIcon className="w-4 h-4" />)}
                                             </button>
                                         </th>
                                     ))}
-                                    <th className="border-b py-3 px-5 text-left cursor-pointer">
+                                    <th className="border-b py-3 px-5 text-left">
                                         <Typography className="text-[11px] font-bold uppercase text-blue-gray-400">Actions</Typography>
                                     </th>
                                 </tr>
@@ -72,13 +72,11 @@ export const OrdersTable = () => {
                             <tbody className={`transition-opacity duration-300 ${isTransitioning ? "opacity-0" : "opacity-100"}`}>
                                 {sortedOrders.map((row) => (
                                     <tr key={row.id}>
-                                        <td className="py-3 px-5 border-b">{row.id}</td>
-                                        <td className="py-3 px-5 border-b">{row.name}</td>
-                                        <td className="py-3 px-5 border-b">{row.address}</td>
-                                        <td className="py-3 px-5 border-b">{row.price}</td>
-                                        <td className="py-3 px-5 border-b">{row.status}</td>
+                                        {["id", "name", "address", "price", "status"].map((field) => (
+                                            <td key={field} className="py-3 text-sm md:text-md px-5 border-b">{row[field]}</td>
+                                        ))}
                                         <td className="py-3 px-5 border-b">
-                                            <button className="px-3 py-1 text-sm font-medium border rounded-lg hover:bg-gray-200" onClick={() => handleEditClick(row)}>
+                                            <button className="px-3 py-1 text-sm font-medium border rounded-lg hover:bg-gray-200" onClick={() => setSelectedRow(row)}>
                                                 View
                                             </button>
                                         </td>
@@ -87,40 +85,32 @@ export const OrdersTable = () => {
                             </tbody>
                         </table>
                     </div>
-                    <div className="flex justify-between items-center mt-4 px-4">
+                    <div className="flex flex-col gap-y-5 lg:flex-row justify-center lg:justify-between items-center mt-4 px-4">
                         <div>
                             <label className="mr-2 text-sm font-medium text-blue-gray-600">Rows per page:</label>
                             <Select value={rowsPerPage.toString()} className="w-full" onChange={(value) => setRowsPerPage(parseInt(value))}>
-                                <Option value="10">10</Option>
-                                <Option value="25">25</Option>
+                                {[10, 25].map((num) => (
+                                    <Option key={num} value={num.toString()}>{num}</Option>
+                                ))}
                             </Select>
                         </div>
-                        <div className="flex gap-3 items-center">
+                        <div className="flex  gap-3 items-center justify-center">
                             <div className="text-sm font-medium text-blue-gray-600">
-                                <span className="ml-4">
-                                    {`${(ordersPage - 1) * rowsPerPage + 1}-${Math.min(ordersPage * rowsPerPage, totalRecords)}`}
-                                </span> of {totalRecords}
+                                {`${(ordersPage - 1) * rowsPerPage + 1}-${Math.min(ordersPage * rowsPerPage, totalRecords)}`} of {totalRecords}
                             </div>
                             <nav aria-label="Table pagination">
                                 <ul className="inline-flex items-center space-x-2">
-                                    <li>
-                                        <button
-                                            onClick={() => handlePageChange(Math.max(ordersPage - 1, 1))}
-                                            disabled={ordersPage === 1}
-                                            className="px-3 py-1 text-sm font-medium border rounded-lg disabled:opacity-50"
-                                        >
-                                            Prev
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button
-                                            onClick={() => handlePageChange(Math.min(ordersPage + 1, totalPages))}
-                                            disabled={ordersPage === totalPages}
-                                            className="px-3 py-1 text-sm font-medium border rounded-lg disabled:opacity-50"
-                                        >
-                                            Next
-                                        </button>
-                                    </li>
+                                    {["Prev", "Next"].map((btn, idx) => (
+                                        <li key={btn}>
+                                            <button
+                                                onClick={() => handlePageChange(idx === 0 ? Math.max(ordersPage - 1, 1) : Math.min(ordersPage + 1, totalPages))}
+                                                disabled={idx === 0 ? ordersPage === 1 : ordersPage === totalPages}
+                                                className="px-3 py-1 text-sm font-medium border rounded-lg disabled:opacity-50"
+                                            >
+                                                {btn}
+                                            </button>
+                                        </li>
+                                    ))}
                                 </ul>
                             </nav>
                         </div>
@@ -128,9 +118,7 @@ export const OrdersTable = () => {
                 </CardBody>
             </Card>
 
-            {selectedRow && (
-                <OverlayCard rowID={selectedRow.id} onClose={() => setSelectedRow(null)} />
-            )}
+            {selectedRow && <OverlayCard rowID={selectedRow.id} onClose={() => setSelectedRow(null)} />}
         </>
     );
 };

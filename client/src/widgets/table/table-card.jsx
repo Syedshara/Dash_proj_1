@@ -25,6 +25,7 @@ export const OverlayCard = ({ rowID, onClose }) => {
         }
     };
 
+
     const scrollRight = () => {
         if (sliderRef.current) {
             sliderRef.current.scrollBy({ left: 250, behavior: "smooth" });
@@ -34,10 +35,10 @@ export const OverlayCard = ({ rowID, onClose }) => {
     return (
         <div
             id="overlay-background"
-            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50   "
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50  overflow-hidden  "
             onClick={handleBackgroundClick}
         >
-            <Card className="relative  w-[90vw] md:w-[700px]  my-atuo max-h-[90vh] overflow-y-auto  space-y-4 px-0 md:px-4 scrollbar-hide snap-y snap-mandatory  bg-white shadow-2xl rounded-lg ">
+            <Card className="relative max-w-xs md:max-w-2xl pb-5 max-h-[95vh] overflow-y-auto  space-y-4 px-0 md:px-2scrollbar-hide snap-y snap-mandatory  bg-white shadow-2xl rounded-lg ">
                 <CardHeader
                     variant="gradient"
                     color="blue-gray"
@@ -51,12 +52,12 @@ export const OverlayCard = ({ rowID, onClose }) => {
                 </CardHeader>
 
 
-                <CardBody className="p-0 md:p-6 pt-8">
+                <CardBody className="p-0 md:p-4 pt-4">
                     <div className="grid grid-cols-2 gap-x-6 gap-y-0 px-10 border-b pb-4">
                         {Object.entries(data).map(([key, value]) => (
                             key !== "productDetails" && (
-                                <Typography key={key} className="text-[14px] font-bold uppercase p-2 text-blue-gray-700">
-                                    <spanc className="text-blue-gray-400 text-[12px]">{key}: </spanc> <strong>{typeof value === "object" ? JSON.stringify(value) : value}</strong>
+                                <Typography key={key} className="text-[14px] font-bold  p-1 text-blue-gray-700">
+                                    <spanc className="text-blue-gray-400 uppercase text-[12px]">{key}: </spanc> <strong>{typeof value === "object" ? JSON.stringify(value) : value}</strong>
                                 </Typography>
                             )
                         ))}
