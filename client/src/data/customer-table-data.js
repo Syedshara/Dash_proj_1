@@ -1,6 +1,6 @@
 import { useFetch } from "@/hooks/useFetch";
 
-const apiUrl = "http://103.91.186.65:30045/service/get-all-customers";
+const apiUrl = "https://zohfy.in/wabot/service/get-all-customers";
 
 const transformCustomers = (apiResponse) => ({
   customers: apiResponse.content.map(c => ({

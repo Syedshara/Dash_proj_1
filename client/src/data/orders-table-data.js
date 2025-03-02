@@ -1,6 +1,6 @@
 import { useFetch } from "@/hooks/useFetch";
 
-const apiUrl = `${import.meta.env.VITE_API_BASE_URL}/orders`;
+const apiUrl = `https://zohfy.in/wabot/service/get-all-orders`;
 
 
 const transformOrders = (apiResponse) => ({
