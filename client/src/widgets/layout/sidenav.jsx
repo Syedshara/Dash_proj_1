@@ -21,15 +21,17 @@ export function Sidenav({ brandImg, brandName, routes }) {
   return (
     <aside
       className={`${sidenavTypes[sidenavType]} ${openSidenav ? "translate-x-0" : "-translate-x-80"
-        } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100`}
+        } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)]  w-48 md:w-72 rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100`}
     >
       <div
         className={`relative`}
       >
-        <Link to="/" className="py-6 px-8 text-center">
+        <Link to="/" className="py-6  px-8 text-center ">
           <Typography
             variant="h6"
             color={sidenavType === "dark" ? "white" : "blue-gray"}
+            className="mt-4 md:mt-0 text-xs md:text-xl"
+
           >
             {brandName}
           </Typography>
@@ -42,7 +44,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
           className="absolute right-0 top-0 grid rounded-br-none rounded-tl-none xl:hidden"
           onClick={() => setOpenSidenav(dispatch, false)}
         >
-          <XMarkIcon strokeWidth={2.5} className="h-5 w-5 text-white" />
+          <XMarkIcon strokeWidth={2.5} className="h-4  w-4 md:h-5 md:w-5 text-white" />
         </IconButton>
       </div>
       <div className="m-4">
@@ -53,7 +55,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
                 <Typography
                   variant="small"
                   color={sidenavType === "dark" ? "white" : "blue-gray"}
-                  className="font-black uppercase opacity-75"
+                  className="font-black uppercase opacity-75 text-xs"
                 >
                   {title}
                 </Typography>
@@ -72,7 +74,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
                             ? "white"
                             : "blue-gray"
                       }
-                      className="flex items-center gap-4 px-4 capitalize"
+                      className="flex items-center gap-4 px-4 capitalize text-xs"
                       fullWidth
                     >
                       {icon}
