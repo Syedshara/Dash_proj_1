@@ -1,12 +1,12 @@
-import { useEffect, useRef } from "react";
-import { Card, CardHeader, CardBody, Typography } from "@material-tailwind/react";
+import { useEffect } from "react";
+import { Card, CardHeader, CardBody, Typography, IconButton } from "@material-tailwind/react";
 import { useFetch } from "@/hooks/useFetch";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 
 export const OverlayCard = ({ rowID, onClose }) => {
     const API_BASE_URL = import.meta.env.VITE_API_SERV_BASE_URL;
     const url = `${API_BASE_URL}/get-single-order?orderId=${rowID}`;
     const { data, loading, error } = useFetch(url);
-    const sliderRef = useRef(null);
 
     useEffect(() => {
         document.body.classList.add("overflow-hidden");
@@ -26,25 +26,25 @@ export const OverlayCard = ({ rowID, onClose }) => {
 
     const products = Array.isArray(data.productDetails) ? data.productDetails : [];
 
-    const scrollLeft = () => {
-        if (sliderRef.current) {
-            sliderRef.current.scrollBy({ left: -250, behavior: "smooth" });
-        }
-    };
-
-    const scrollRight = () => {
-        if (sliderRef.current) {
-            sliderRef.current.scrollBy({ left: 250, behavior: "smooth" });
-        }
-    };
-
     return (
         <div
             id="overlay-background"
             className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50 min-h-full min-w-full"
             onClick={handleBackgroundClick}
         >
-            <Card className="relative max-w-xs md:max-w-xl lg:max-w-2xl pb-5 max-h-[90vh] overflow-y-auto space-y-4 px-0 md:px-2 scrollbar-hide snap-y snap-mandatory bg-white shadow-2xl rounded-lg">
+            <Card className="relative max-w-xs md:max-w-xl lg:max-w-2xl pb-5 space-y-4 px-0 md:px-2 bg-white shadow-2xl rounded-lg">
+
+                <IconButton
+                    variant="text"
+                    color="black"
+                    size="sm"
+                    ripple={false}
+                    className="absolute -top-1 -right-1 font-bold text-gray-600 bg-transparent mb-7 hover:bg-transparent"
+                    onClick={() => onClose()}
+                >
+                    <XMarkIcon strokeWidth={2.5} className="h-4 w-4 md:h-5 md:w-5 text-black" />
+                </IconButton>
+
                 <CardHeader
                     variant="gradient"
                     color="blue-gray"
@@ -74,36 +74,35 @@ export const OverlayCard = ({ rowID, onClose }) => {
                                 Products Details:
                             </Typography>
 
-                            <div className="relative flex items-center">
-                                <button onClick={scrollLeft} className="text-xl p-2 absolute left-0 z-10 bg-gray-300 rounded-full shadow-md opacity-60">
-                                    ◀
-                                </button>
-
-                                <div ref={sliderRef} className="flex overflow-hidden overflow-x-auto space-x-4 px-12 scrollbar-hide snap-x snap-mandatory">
-                                    {products.map((product, index) => (
-                                        <Card key={index} className="min-w-[220px] bg-gray-100 border p-1 rounded-lg shadow-lg">
-                                            <CardBody>
-                                                <Typography className="text-[12px] font-bold uppercase p-1 text-blue-gray-700">
-                                                    <strong>Product Name:</strong> {product.productNameEN}
+                            <div className="max-h-[250px] overflow-y-auto px-4 scrollbar-hide space-y-1">
+                                {products.map((product, index) => (
+                                    <div key={index} className=" pb-1">
+                                        <div className="grid grid-cols-2 gap-x-4 bg-gray-100 rounded-lg py-2 px-3">
+                                            <div>
+                                                <Typography className="text-[13px] font-bold uppercase text-blue-gray-700">
+                                                    <strong>Name:</strong> {product.productNameEN}
                                                 </Typography>
-                                                <Typography className="text-[12px] font-bold uppercase p-1 text-blue-gray-700">
+                                                <Typography className="text-[13px] font-bold uppercase text-blue-gray-700">
                                                     <strong>Price:</strong> {product.price}
                                                 </Typography>
-                                                <Typography className="text-[12px] font-bold uppercase p-1 text-blue-gray-700">
+                                            </div>
+
+                                            <div className="border-l border-gray-300 pl-3">
+                                                <Typography className="text-[13px] font-bold uppercase text-blue-gray-700">
+                                                    <strong>Product Name TA:</strong> {product.productNameTA}
+                                                </Typography>
+                                                <Typography className="text-[13px] font-bold uppercase text-blue-gray-700">
                                                     <strong>Weight:</strong> {product.weight}g
                                                 </Typography>
-                                                <Typography className="text-[12px] font-bold uppercase p-1 text-blue-gray-700">
-                                                    <strong>Quantity:</strong> {product.quantity}
+                                                <Typography className="text-[13px] font-bold uppercase text-blue-gray-700">
+                                                    <strong>Qty:</strong> {product.quantity}
                                                 </Typography>
-                                            </CardBody>
-                                        </Card>
-                                    ))}
-                                </div>
-
-                                <button onClick={scrollRight} className="text-xl p-2 absolute right-0 z-10 bg-gray-300 rounded-full shadow-md opacity-60">
-                                    ▶
-                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
+
                         </div>
                     )}
                 </CardBody>
