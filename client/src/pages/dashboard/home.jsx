@@ -1,26 +1,15 @@
 import React from "react";
 import {
   Typography,
-  Card,
-  CardHeader,
-  CardBody,
-  IconButton,
-  Menu,
-  MenuHandler,
-  MenuList,
-  MenuItem,
 } from "@material-tailwind/react";
-import {
-  EllipsisVerticalIcon,
-} from "@heroicons/react/24/outline";
+
 import { StatisticsCard } from "@/widgets/cards";
 import { StatisticsChart } from "@/widgets/charts";
 import {
   statisticsCardsData,
   statisticsChartsData,
 } from "@/data";
-import { ClockIcon } from "@heroicons/react/24/solid";
-import card from "@material-tailwind/react/theme/components/card";
+
 
 export function Home() {
   const cardData = statisticsCardsData();

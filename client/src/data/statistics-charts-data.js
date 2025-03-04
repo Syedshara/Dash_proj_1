@@ -78,6 +78,7 @@ const transformData = (data) => {
               lines: {
                 show: true,
               },
+
             },
           }
 
