@@ -24,8 +24,15 @@ export function StatisticsCard({ color, icon, title, value, footer }) {
           {title}
         </Typography>
         <Typography variant="h4" color="blue-gray">
-          {value}
+          {title === "Total Revenue" || title === "Paid Revenue" ? (
+            <>
+              {value} <span style={{ fontSize: "0.5em" }} className="text-gray-600">INR</span>
+            </>
+          ) : (
+            value
+          )}
         </Typography>
+
       </CardBody>
       {footer && (
         <CardFooter className="border-t border-blue-gray-50 p-4">

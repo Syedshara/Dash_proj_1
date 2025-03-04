@@ -3,8 +3,11 @@ import { Card, CardHeader, CardBody, Typography, Select, Option } from "@materia
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
 import { ordersTableData } from "@/data";
 import { OverlayCard } from "@/widgets/table/table-card";
+import { useMaterialTailwindController } from "@/context";
 
 export const OrdersTable = () => {
+    const [controller] = useMaterialTailwindController();
+    const { sidenavColor } = controller;
     const [ordersPage, setOrdersPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [sortConfig, setSortConfig] = useState({ key: "id", direction: "ascending" });
@@ -44,12 +47,21 @@ export const OrdersTable = () => {
             setIsTransitioning(false);
         }, 300);
     };
+    const sidenavColors = {
+        white: "from-gray-200 to-gray-300 border-gray-200",
+        dark: "from-blue-gray-900 to-blue-gray-700",
+        green: "from-green-400 to-green-600",
+        orange: "from-orange-700 to-orange-800",
+        red: "from-red-400 to-red-600",
+        pink: "from-pink-400 to-pink-600",
+    };
+
 
     return (
         <>
             <Card>
-                <CardHeader variant="gradient" color="blue-gray" className="p-6 bg-gradient-to-br from-blue-gray-900 to-blue-gray-700">
-                    <Typography variant="h6" color="white">Orders Table</Typography>
+                <CardHeader variant="gradient" color="blue-gray" className={`p-6 bg-gradient-to-br ${sidenavColors[sidenavColor]} `}>
+                    <Typography variant="h6" color={`${sidenavColor == "white" ? "black" : "white"}`}>Orders Table</Typography>
                 </CardHeader>
                 <CardBody>
                     <div className="overflow-y-auto" style={{ maxHeight: "400px" }}>

@@ -2,10 +2,15 @@ import { useEffect } from "react";
 import { Card, CardHeader, CardBody, Typography, IconButton } from "@material-tailwind/react";
 import { useFetch } from "@/hooks/useFetch";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { useMaterialTailwindController } from "@/context";
+
 
 export const OverlayCard = ({ rowID, onClose }) => {
+    const [controller] = useMaterialTailwindController();
+    const { sidenavColor } = controller;
     const API_BASE_URL = import.meta.env.VITE_API_SERV_BASE_URL;
     const url = `${API_BASE_URL}/get-single-order?orderId=${rowID}`;
+
     const { data, loading, error } = useFetch(url);
 
     useEffect(() => {
@@ -25,14 +30,39 @@ export const OverlayCard = ({ rowID, onClose }) => {
     if (!data) return null;
 
     const products = Array.isArray(data.productDetails) ? data.productDetails : [];
+    const fieldMapping = {
+        customerName: "Customer Name",
+        orderIntime: "Order In-Time",
+        phone: "Phone",
+        postcode: "Postcode",
+        price: "Price",
+        quantity: "Quantity",
+        shippingPrice: "Shipping Price",
+        state: "State",
+        status: "Status",
+        weight: "Weight",
+        timestamp: "Created At",
+        address: "Address",
+        batchId: "Batch ID",
+        id: "Order ID"
+    };
+    const sidenavColors = {
+        white: "from-gray-200 to-gray-300 border-gray-400",
+        dark: "from-blue-gray-900 to-blue-gray-700",
+        green: "from-green-400 to-green-600",
+        orange: "from-orange-700 to-orange-800",
+        red: "from-red-400 to-red-600",
+        pink: "from-pink-400 to-pink-600",
+    };
 
     return (
         <div
             id="overlay-background"
-            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50 min-h-full min-w-full"
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50 min-h-full min-w-full overflow-y-auto"
+
             onClick={handleBackgroundClick}
         >
-            <Card className="relative max-w-xs md:max-w-xl lg:max-w-2xl pb-5 space-y-4 px-0 md:px-2 bg-white shadow-2xl rounded-lg">
+            <Card className="relative max-w-xs md:max-w-xl lg:max-w-2xl pb-5 space-y-4 px-0 md:px-2 bg-white shadow-2xl rounded-lg overflow-hidden overflow-y-auto max-h-[calc(100vh-32px)]">
 
                 <IconButton
                     variant="text"
@@ -49,9 +79,11 @@ export const OverlayCard = ({ rowID, onClose }) => {
                     variant="gradient"
                     color="blue-gray"
                     floated={false}
-                    className="text-white relative rounded-t-lg shadow-md text-center bg-gradient-to-br from-blue-gray-900 to-blue-gray-700 min-h-[50px] flex items-center justify-center"
+
+
+                    className={`text-white relative rounded-t-lg shadow-md text-center  bg-gradient-to-br ${sidenavColors[sidenavColor]} min-h-[50px] flex items-center justify-center `}
                 >
-                    <Typography variant="h6" className="text-white text-xl font-semibold">
+                    <Typography variant="h6" color={`${sidenavColor == "white" ? "black" : "white"}`} className=" text-xl font-semibold">
                         Order Details
                     </Typography>
                 </CardHeader>
@@ -61,50 +93,46 @@ export const OverlayCard = ({ rowID, onClose }) => {
                         {Object.entries(data).map(([key, value]) => (
                             key !== "productDetails" && (
                                 <Typography key={key} className="text-[14px] font-bold p-1 text-blue-gray-700">
-                                    <span className="text-blue-gray-400 uppercase text-[12px]">{key}: </span>
-                                    <strong>{typeof value === "object" ? JSON.stringify(value) : value}</strong>
+                                    <span className="text-blue-gray-400 uppercase text-[10px] md:text-[12px]">{fieldMapping[key]}: </span>
+                                    <strong>{typeof value === "object" ? JSON.stringify(value) : value}{key == "weight" ? "g" : ""}</strong>
                                 </Typography>
                             )
                         ))}
                     </div>
 
                     {products.length > 0 && (
-                        <div className="mt-6">
-                            <Typography className="text-lg font-semibold text-blue-gray-700 text-start ml-4 mb-3">
-                                Products Details:
+                        <div className="mt-3 px-4">
+                            <Typography className="text-md font-semibold text-blue-gray-700 text-start ml-2 mb-1">
+                                Product Details:
                             </Typography>
 
-                            <div className="max-h-[250px] overflow-y-auto px-4 scrollbar-hide space-y-1">
-                                {products.map((product, index) => (
-                                    <div key={index} className=" pb-1">
-                                        <div className="grid grid-cols-2 gap-x-4 bg-gray-100 rounded-lg py-2 px-3">
-                                            <div>
-                                                <Typography className="text-[13px] font-bold uppercase text-blue-gray-700">
-                                                    <strong>Name:</strong> {product.productNameEN}
-                                                </Typography>
-                                                <Typography className="text-[13px] font-bold uppercase text-blue-gray-700">
-                                                    <strong>Price:</strong> {product.price}
-                                                </Typography>
-                                            </div>
-
-                                            <div className="border-l border-gray-300 pl-3">
-                                                <Typography className="text-[13px] font-bold uppercase text-blue-gray-700">
-                                                    <strong>Product Name TA:</strong> {product.productNameTA}
-                                                </Typography>
-                                                <Typography className="text-[13px] font-bold uppercase text-blue-gray-700">
-                                                    <strong>Weight:</strong> {product.weight}g
-                                                </Typography>
-                                                <Typography className="text-[13px] font-bold uppercase text-blue-gray-700">
-                                                    <strong>Qty:</strong> {product.quantity}
-                                                </Typography>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
+                            <div className=" overflow-x-auto  overflow-y-auto" style={{ maxHeight: "300px" }}>
+                                <table className="min-w-full border border-gray-300 rounded-lg shadow-sm">
+                                    <thead className=" text-blue-gray-700 sticky top-0 bg-gray-100 z-10">
+                                        <tr>
+                                            <th className="border px-4 py-2 text-left">#</th>
+                                            <th className="border px-4 py-2 text-left">Name</th>
+                                            <th className="border px-4 py-2 text-left">Price</th>
+                                            <th className="border px-4 py-2 text-left">Weight</th>
+                                            <th className="border px-4 py-2 text-left">Qty</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {products.map((product, index) => (
+                                            <tr key={index} className={`py-3 text-sm md:text-md px-5 border-b ${index % 2 === 1 ? "bg-gray-100" : ""}`}>
+                                                <td className=" px-4 py-2">{index + 1}</td>
+                                                <td className=" px-4 py-2">{product.productNameEN}</td>
+                                                <td className=" px-4 py-2">{product.price}</td>
+                                                <td className=" px-4 py-2">{product.weight}g</td>
+                                                <td className=" px-4 py-2">{product.quantity}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
                             </div>
-
                         </div>
                     )}
+
                 </CardBody>
             </Card>
         </div>

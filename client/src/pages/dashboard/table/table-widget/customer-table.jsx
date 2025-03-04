@@ -3,8 +3,11 @@ import { Card, CardHeader, CardBody, Typography, Select, Option } from "@materia
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
 import { customersTableData } from "@/data";
 import { OverlayCard } from "@/widgets/table/table-card";
+import { useMaterialTailwindController } from "@/context";
 
 export const CustomerTable = () => {
+    const [controller] = useMaterialTailwindController();
+    const { sidenavColor } = controller;
     const [customersPage, setCustomersPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [sortConfig, setSortConfig] = useState({ key: "id", direction: "ascending" });
@@ -32,11 +35,21 @@ export const CustomerTable = () => {
             : String(b[sortConfig.key]).localeCompare(String(a[sortConfig.key]));
     });
 
+    const sidenavColors = {
+        white: "from-gray-200 to-gray-300 border-gray-200",
+        dark: "from-blue-gray-900 to-blue-gray-700",
+        green: "from-green-400 to-green-600",
+        orange: "from-orange-700 to-orange-800",
+        red: "from-red-400 to-red-600",
+        pink: "from-pink-400 to-pink-600",
+    };
+
+
     return (
         <>
             <Card>
-                <CardHeader variant="gradient" color="gray" className="p-6 bg-gradient-to-br from-blue-gray-900 to-blue-gray-700">
-                    <Typography variant="h6" color="white">Customer Table</Typography>
+                <CardHeader variant="gradient" color="gray" className={`p-6 bg-gradient-to-br ${sidenavColors[sidenavColor]} `}>
+                    <Typography variant="h6" color={`${sidenavColor == "white" ? "black" : "white"}`}>Customer Table</Typography>
                 </CardHeader>
                 <CardBody>
                     {error ? (
@@ -45,7 +58,7 @@ export const CustomerTable = () => {
                         <>
                             <div ref={tableRef} className="overflow-y-auto" style={{ maxHeight: "400px" }}>
                                 <table className="w-full min-w-[640px] table-auto">
-                                    <thead className="sticky top-0 bg-gray-100 z-10">
+                                    <thead className="sticky top-0 bg-gray-100 z-10 ">
                                         <tr>
                                             {["ID", "Name", "Address", "Phone", "Pincode"].map(el => (
                                                 <th key={el} className="border-b py-3 px-5 text-left cursor-pointer" onClick={() => handleSort(el.toLowerCase())}>
@@ -55,7 +68,7 @@ export const CustomerTable = () => {
                                                     </button>
                                                 </th>
                                             ))}
-                                            <th className="border-b py-3 px-5 text-left"><Typography className="text-[11px] font-bold uppercase text-blue-gray-400">Actions</Typography></th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -64,11 +77,11 @@ export const CustomerTable = () => {
                                                 {["id", "name", "address", "phone", "postcode"].map(field => (
                                                     <td key={field} className="py-3 text-sm md:text-md px-5 border-b">{row[field]}</td>
                                                 ))}
-                                                <td className="py-3 px-5 border-b">
+                                                {/* <td className="py-3 px-5 border-b">
                                                     <button className="px-3 py-1 text-sm font-medium border rounded-lg hover:bg-gray-200" onClick={() => setSelectedRow(row)}>
                                                         Edit
                                                     </button>
-                                                </td>
+                                                </td> */}
                                             </tr>
                                         ))}
                                     </tbody>
