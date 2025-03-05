@@ -56,9 +56,9 @@ export const CustomerTable = () => {
                             Customer Table
                         </Typography>
 
-                        <Button variant="text" className="flex items-center normal-case justify-center gap-2 w-40" color="white" onClick={() => setSearch(true)}>
+                        <Button variant="text" className="flex items-center normal-case justify-center gap-1 w-18 md:w-36 " color="white" onClick={() => setSearch(true)}>
                             <MagnifyingGlassIcon className="h-5 w-5" />
-                            <span className="text-[13px] font-think">Search here</span>
+                            <span className="hidden md:block text-[13px] font-think">Search here</span>
 
                         </Button>
 
