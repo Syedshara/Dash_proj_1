@@ -6,6 +6,7 @@ const apiUrl = `https://zohfy.in/wabot/service/get-all-orders`;
 const transformOrders = (apiResponse) => ({
   orders: apiResponse.content.map(o => ({
     id: o.id,
+    batchId: o.batchId,
     phone: o.phone,
     name: o.customerName,
     address: o.address,

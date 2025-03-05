@@ -43,6 +43,35 @@ export const chartsConfig = {
     },
   },
 
+  grid: {
+    show: true,
+    borderColor: "#DCE0E3",
+    borderWidth: 0.5,
+    opacity: 0.5,
+
+    yaxis: {
+      lines: {
+        show: true,
+        opacity: 0.5,
+      },
+      style: {
+        opacity: 0.5,
+      }
+    },
+    xaxis: {
+      lines: {
+        show: true,
+        opacity: 0.5,
+      },
+      style: {
+        opacity: 0.5,
+      }
+    },
+    padding: {
+      top: 5,
+      right: 20,
+    },
+  },
   fill: {
     opacity: 0.9,
   },

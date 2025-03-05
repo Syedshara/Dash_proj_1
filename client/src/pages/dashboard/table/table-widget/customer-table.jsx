@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Card, CardHeader, CardBody, Typography, Select, Option } from "@material-tailwind/react";
+import { Card, CardHeader, CardBody, Typography, Select, Option, Button } from "@material-tailwind/react";
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
 import { customersTableData } from "@/data";
-import { OverlayCard } from "@/widgets/table/table-card";
+import { SearchCard } from "@/widgets/cards";
 import { useMaterialTailwindController } from "@/context";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+
 
 export const CustomerTable = () => {
     const [controller] = useMaterialTailwindController();
@@ -11,7 +13,7 @@ export const CustomerTable = () => {
     const [customersPage, setCustomersPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [sortConfig, setSortConfig] = useState({ key: "id", direction: "ascending" });
-    const [selectedRow, setSelectedRow] = useState(null);
+    const [search, setSearch] = useState(false);
     const tableRef = useRef(null);
 
     const { data, error } = customersTableData(customersPage, rowsPerPage);
@@ -48,8 +50,19 @@ export const CustomerTable = () => {
     return (
         <>
             <Card>
-                <CardHeader variant="gradient" color="gray" className={`p-6 bg-gradient-to-br ${sidenavColors[sidenavColor]} `}>
-                    <Typography variant="h6" color={`${sidenavColor == "white" ? "black" : "white"}`}>Customer Table</Typography>
+                <CardHeader variant="gradient" color="gray" className={`p-4 bg-gradient-to-br ${sidenavColors[sidenavColor]}`}>
+                    <div className="flex justify-between items-center">
+                        <Typography variant="h6" color={`${sidenavColor === "white" ? "black" : "white"}`}>
+                            Customer Table
+                        </Typography>
+
+                        <Button variant="text" className="flex items-center normal-case justify-center gap-2 w-40" color="white" onClick={() => setSearch(true)}>
+                            <MagnifyingGlassIcon className="h-5 w-5" />
+                            <span className="text-[13px] font-think">Search here</span>
+
+                        </Button>
+
+                    </div>
                 </CardHeader>
                 <CardBody>
                     {error ? (
@@ -77,11 +90,6 @@ export const CustomerTable = () => {
                                                 {["id", "name", "address", "phone", "postcode"].map(field => (
                                                     <td key={field} className="py-3 text-sm md:text-md px-5 border-b">{row[field]}</td>
                                                 ))}
-                                                {/* <td className="py-3 px-5 border-b">
-                                                    <button className="px-3 py-1 text-sm font-medium border rounded-lg hover:bg-gray-200" onClick={() => setSelectedRow(row)}>
-                                                        Edit
-                                                    </button>
-                                                </td> */}
                                             </tr>
                                         ))}
                                     </tbody>
@@ -120,7 +128,7 @@ export const CustomerTable = () => {
                     )}
                 </CardBody>
             </Card>
-            {selectedRow && <OverlayCard rowData={selectedRow} onClose={() => setSelectedRow(null)} />}
+            {search && <SearchCard onClose={() => setSearch(false)} />}
         </>
     );
 };

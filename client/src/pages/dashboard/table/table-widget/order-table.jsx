@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Card, CardHeader, CardBody, Typography, Select, Option } from "@material-tailwind/react";
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
 import { ordersTableData } from "@/data";
@@ -13,6 +13,7 @@ export const OrdersTable = () => {
     const [sortConfig, setSortConfig] = useState({ key: "id", direction: "ascending" });
     const [selectedRow, setSelectedRow] = useState(null);
     const [isTransitioning, setIsTransitioning] = useState(false);
+    const [statusFilter, setStatusFilter] = useState("All");
 
     const { data } = ordersTableData(ordersPage, rowsPerPage);
     const { orders = [], totalPages = 1, totalRecords = 0 } = data || {};
@@ -26,19 +27,18 @@ export const OrdersTable = () => {
 
     const sortedOrders = [...orders].sort((a, b) => {
         if (!sortConfig.key) return 0;
-
         const valueA = a[sortConfig.key];
         const valueB = b[sortConfig.key];
 
         if (typeof valueA === "number" && typeof valueB === "number") {
             return sortConfig.direction === "ascending" ? valueA - valueB : valueB - valueA;
         }
-
         return sortConfig.direction === "ascending"
             ? String(valueA).localeCompare(String(valueB))
             : String(valueB).localeCompare(String(valueA));
     });
 
+    const filteredOrders = statusFilter === "All" ? sortedOrders : sortedOrders.filter(order => order.status === statusFilter);
 
     const handlePageChange = (newPage) => {
         setIsTransitioning(true);
@@ -47,6 +47,7 @@ export const OrdersTable = () => {
             setIsTransitioning(false);
         }, 300);
     };
+
     const sidenavColors = {
         white: "from-gray-200 to-gray-300 border-gray-200",
         dark: "from-blue-gray-900 to-blue-gray-700",
@@ -56,23 +57,57 @@ export const OrdersTable = () => {
         pink: "from-pink-400 to-pink-600",
     };
 
-
     return (
         <>
             <Card>
-                <CardHeader variant="gradient" color="blue-gray" className={`p-6 bg-gradient-to-br ${sidenavColors[sidenavColor]} `}>
-                    <Typography variant="h6" color={`${sidenavColor == "white" ? "black" : "white"}`}>Orders Table</Typography>
+                <CardHeader
+                    variant="gradient"
+                    color="blue-gray"
+                    className={`p-6 bg-gradient-to-br ${sidenavColors[sidenavColor]}`}
+                >
+                    <Typography variant="h6" color={`${sidenavColor === "white" ? "black" : "white"}`}>
+                        Orders Table
+                    </Typography>
+
                 </CardHeader>
+                <div className="relative max-w-full  pl-7 md:pl-11 bg-transparent">
+                    <div className="md:absolute mt-10 md:mt-0 md:-top-14 md:right-20 w-16 md:w-40 bg-transparent">
+                        <Select
+                            value={statusFilter}
+                            onChange={(value) => setStatusFilter(value)}
+                            color="blue-gray"
+                            className="text-blue-gray-600 md:text-white"
+
+                        >
+                            <Option value="All">All</Option>
+                            <Option value="PAID">Paid</Option>
+                            <Option value="PENDING">Pending</Option>
+                        </Select>
+                    </div>
+                </div>
+
+
+
+
                 <CardBody>
                     <div className="overflow-y-auto" style={{ maxHeight: "400px" }}>
                         <table className="w-full min-w-[640px] table-auto">
                             <thead className="sticky top-0 bg-gray-100 z-10">
                                 <tr>
-                                    {["ID", "Name", "Address", "Price", "Status"].map((el) => (
-                                        <th key={el} className="border-b py-3 px-5 text-left cursor-pointer" onClick={() => handleSort(el.toLowerCase())}>
-                                            <button className="flex items-center gap-1">
-                                                <Typography className="text-[12px] font-bold uppercase p-2 text-blue-gray-400">{el}</Typography>
-                                                {sortConfig.key === el.toLowerCase() && (sortConfig.direction === "ascending" ? <ChevronUpIcon className="w-4 h-4" /> : <ChevronDownIcon className="w-4 h-4" />)}
+                                    {["ID", "Batch Id", "Name", "Address", "Price", "Status"].map((el) => (
+                                        <th key={el} className="border-b py-3 px-5 text-left cursor-pointer " onClick={() => handleSort(el.toLowerCase())}>
+                                            <button
+                                                className="flex items-center gap-1"
+                                                disabled={el === "Batch Id"}
+                                            >
+                                                <Typography className={`text-[12px] font-bold uppercase p-2 text-blue-gray-400 whitespace-nowrap ${el === "Batch Id" ? "cursor-not-allowed" : ""}`}>
+                                                    {el}
+                                                </Typography>
+                                                {el !== "Batch Id" && sortConfig.key === el.toLowerCase() && (
+                                                    sortConfig.direction === "ascending" ?
+                                                        <ChevronUpIcon className="w-4 h-4" /> :
+                                                        <ChevronDownIcon className="w-4 h-4" />
+                                                )}
                                             </button>
                                         </th>
                                     ))}
@@ -82,9 +117,9 @@ export const OrdersTable = () => {
                                 </tr>
                             </thead>
                             <tbody className={`transition-opacity duration-300 ${isTransitioning ? "opacity-0" : "opacity-100"}`}>
-                                {sortedOrders.map((row) => (
+                                {filteredOrders.map((row) => (
                                     <tr key={row.id}>
-                                        {["id", "name", "address", "price", "status"].map((field) => (
+                                        {["id", "batchId", "name", "address", "price", "status"].map((field) => (
                                             <td key={field} className="py-3 text-sm md:text-md px-5 border-b">{row[field]}</td>
                                         ))}
                                         <td className="py-3 px-5 border-b">
@@ -128,7 +163,7 @@ export const OrdersTable = () => {
                         </div>
                     </div>
                 </CardBody>
-            </Card>
+            </Card >
 
             {selectedRow && <OverlayCard rowID={selectedRow.id} onClose={() => setSelectedRow(null)} />}
         </>
