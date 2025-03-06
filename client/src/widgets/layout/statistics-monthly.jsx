@@ -22,7 +22,7 @@ export function StatisticsMonthly() {
     return (
 
         <div className="mb-12">
-            <div className="w-full flex justify-end px-12 ">
+            <div className="w-full flex justify-start md:justify-end mb-12 md:mb-0 md:px-12 ">
                 <div className="  w-40 ">
                     <Select
                         value={selectedMonth}

@@ -13,7 +13,7 @@ export function StatisticsMonCard({ title, totalOrders, totalProductsSold, total
                 color="gray"
                 floated={true}
                 shadow={true}
-                className="absolute grid h-16 w-80 -mt-10 shadow-lg place-items-center"
+                className="absolute grid h-16 w-50 px-5 md:w-80 -mt-10 shadow-lg place-items-center text-sm md:text-lg"
             >
                 {title}
             </CardHeader>

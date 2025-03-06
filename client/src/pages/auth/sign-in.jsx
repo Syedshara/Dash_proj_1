@@ -52,18 +52,18 @@ export function SignIn() {
   };
 
   return (
-    <section className="flex h-screen justify-center items-center px-8 bg-gray-50 bg-opacity-50">
-      <div className="flex w-full lg:w-4/5 h-[80vh] shadow-2xl rounded-3xl overflow-hidden">
-        <div className="w-1/2 h-full bg-white flex flex-col justify-center items-center rounded-l-3xl">
+    <section className="flex h-screen justify-center items-center px-2 md:px-8 bg-gray-50 bg-opacity-50">
+      <div className="flex w-full lg:w-4/5 h-[80vh] flex-col md:flex-row shadow-2xl rounded-3xl overflow-hidden ">
+        <div className="w-full md:w-1/2 h-full border bg-white flex flex-col justify-center items-center rounded-l-3xl ">
           <div className="text-center px-8">
-            <Typography variant="h2" className="font-bold mb-4 text-blue-gray-700">
+            <Typography variant="h2" className="font-bold mb-4 text-blue-gray-700 text-2xl md:text-4xl">
               Sign In
             </Typography>
-            <Typography variant="paragraph" color="blue-gray" className="text-lg font-normal text-blue-gray-800">
+            <Typography variant="paragraph" color="blue-gray" className="text-md md:text-lg  font-normal text-blue-gray-800">
               Enter your username and password to Sign In.
             </Typography>
           </div>
-          <form className="mt-8 w-80 " onSubmit={handleSubmit}>
+          <form className="mt-8 w-80 px-10 md:px-0" onSubmit={handleSubmit}>
             <div className="mb-4 flex flex-col gap-6 ">
               <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
                 Your username
@@ -99,7 +99,7 @@ export function SignIn() {
           </form>
         </div>
 
-        <div className="w-1/2 h-full hidden lg:block">
+        <div className="w-1/2  h-full hidden lg:block">
           <img
             src="https://i.pinimg.com/1200x/11/56/b9/1156b9303d28a652a36dc1e6a40e4edc.jpg"
             className="h-full w-full object-cover rounded-r-3xl"
