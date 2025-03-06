@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Input, Button, Typography } from "@material-tailwind/react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CryptoJS from "crypto-js";
 import Cookies from "js-cookie";
 
@@ -41,7 +41,7 @@ export function SignIn() {
         setSuccessMessage("User logged in successfully");
         setTimeout(() => {
           navigate("/dashboard/home");
-        }, 1000)
+        }, 500)
 
       } else {
         setErrorMessage("Invalid username or password");

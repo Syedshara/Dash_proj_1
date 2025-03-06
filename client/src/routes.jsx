@@ -2,8 +2,10 @@ import {
   HomeIcon,
   UserCircleIcon,
   TableCellsIcon,
-  ServerStackIcon,
+
 } from "@heroicons/react/24/solid";
+import { IoMdLogOut } from "react-icons/io";
+
 import { Home, Profile, Tables } from "@/pages/dashboard";
 import { SignOut } from "@/pages/auth";
 
@@ -40,7 +42,7 @@ export const routes = [
     layout: "auth",
     pages: [
       {
-        icon: <ServerStackIcon {...icon} />,
+        icon: <IoMdLogOut {...icon} />,
         name: "sign out",
         path: "/sign-out",
         element: <SignOut />,

@@ -3,3 +3,4 @@ export * from "@/data/statistics-charts-data";
 export * from "@/data/customer-table-data";
 export * from "@/data/orders-table-data";
 export * from "@/data/search-data";
+export * from "@/data/statistics-monthly-card-data";

@@ -7,13 +7,14 @@ import { StatisticsCard } from "@/widgets/cards";
 import { StatisticsChart } from "@/widgets/charts";
 import {
   statisticsCardsData,
-  statisticsChartsData,
+  statisticsChartsData
 } from "@/data";
-
+import { StatisticsMonthly } from "@/widgets/layout";
 
 export function Home() {
   const cardData = statisticsCardsData();
   const chartData = statisticsChartsData();
+
 
 
 
@@ -37,20 +38,15 @@ export function Home() {
           />
         ))}
       </div>
+
+      <StatisticsMonthly />
+
+
       <div className="mb-6 text-white grid grid-cols-1 gap-y-12 gap-x-6 md:grid-cols-2 xl:grid-cols-3">
         {chartData.map((props) => (
           <StatisticsChart
             key={props.title}
             {...props}
-          // footer={
-          //   <Typography
-          //     variant="small"
-          //     className="flex items-center font-normal text-blue-gray-600"
-          //   >
-          //     <ClockIcon strokeWidth={2} className="h-4 w-4 text-blue-gray-400" />
-          //     &nbsp;{props.footer}
-          //   </Typography>
-          // }
           />
         ))}
       </div>
