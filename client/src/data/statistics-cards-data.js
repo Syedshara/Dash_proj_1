@@ -50,7 +50,8 @@ export const statisticsCardsData = () => {
         prevDate = prevDate.subtract(1, "day");
       }
     }
-    const val = yesterdayKey ? "Testerday :" : "Today :"
+    const val = yesterdayKey ? "Yesterday :" : "Today :"
+
 
     return todayData
       ? [

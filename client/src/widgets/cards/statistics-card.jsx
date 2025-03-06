@@ -50,6 +50,7 @@ StatisticsCard.defaultProps = {
 
 StatisticsCard.propTypes = {
   color: PropTypes.oneOf([
+    "black",
     "white",
     "blue-gray",
     "gray",

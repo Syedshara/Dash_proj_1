@@ -8,8 +8,6 @@ const transformData = (data) => {
   const last10Days = data.slice(0, 10).reverse();
   const categories = last10Days.map((item) => item.orderDay);
 
-  console.log(last10Days)
-
   return [
     {
       color: "blue",

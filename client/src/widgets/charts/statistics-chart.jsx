@@ -55,6 +55,7 @@ StatisticsChart.defaultProps = {
 
 StatisticsChart.propTypes = {
   color: PropTypes.oneOf([
+    "black",
     "white",
     "blue-gray",
     "gray",

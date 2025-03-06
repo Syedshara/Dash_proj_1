@@ -2,7 +2,6 @@ import { Routes, Route } from "react-router-dom";
 import {
   ChartPieIcon,
   UserIcon,
-  UserPlusIcon,
   ArrowRightOnRectangleIcon,
 } from "@heroicons/react/24/solid";
 
@@ -21,13 +20,8 @@ export function Auth() {
       icon: UserIcon,
     },
     {
-      name: "sign up",
-      path: "/auth/sign-up",
-      icon: UserPlusIcon,
-    },
-    {
       name: "sign in",
-      path: "/auth/sign-in",
+      path: "/auth/sign-out",
       icon: ArrowRightOnRectangleIcon,
     },
   ];
