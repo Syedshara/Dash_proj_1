@@ -8,8 +8,7 @@ import { useMaterialTailwindController } from "@/context";
 export const OverlayCard = ({ rowID, onClose }) => {
     const [controller] = useMaterialTailwindController();
     const { sidenavColor } = controller;
-    const API_BASE_URL = import.meta.env.VITE_API_SERV_BASE_URL;
-    const url = `${API_BASE_URL}/get-single-order?orderId=${rowID}`;
+    const url = `https://zohfy.in/wabot/service/get-single-order?orderId=${rowID}`;
 
     const { data, loading, error } = useFetch(url);
 

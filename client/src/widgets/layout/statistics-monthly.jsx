@@ -15,19 +15,20 @@ export function StatisticsMonthly() {
 
     const filteredData = data?.month_stats?.filter((item) => item.orderDay.startsWith(selectedMonth)) || [];
 
-    const totalOrders = filteredData.reduce((sum, item) => sum + item.totalOrders, 0);
+    const totalOrders = filteredData.reduce((sum, item) => sum + item.totalPaidOrders, 0);
     const totalProductsSold = filteredData.reduce((sum, item) => sum + item.totalProductsSold, 0);
-    const totalPaidRevenue = filteredData.reduce((sum, item) => sum + item.totalRevenue, 0);
+    const totalPaidRevenue = filteredData.reduce((sum, item) => sum + item.paidRevenue, 0);
 
     return (
 
         <div className="mb-12">
             <div className="w-full flex justify-start md:justify-end mb-12 md:mb-0 md:px-12 ">
-                <div className="  w-40 ">
+                <div className="  w-40  ">
                     <Select
                         value={selectedMonth}
                         label="Month"
                         onChange={(value) => setSelectedMonth(value)}
+                        menuProps={{ className: "max-h-80 overflow-y-auto" }}
                     >
                         {["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"].map((month) => (
                             <Option key={month} value={month}>

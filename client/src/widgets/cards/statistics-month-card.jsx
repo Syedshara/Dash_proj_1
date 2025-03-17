@@ -40,7 +40,7 @@ export function StatisticsMonCard({ title, totalOrders, totalProductsSold, total
                     <Card className="border  shadow-sm">
                         <CardBody className="p-4 text-left">
                             <Typography variant="small" className="font-normal text-blue-gray-600">
-                                Total Revenue:
+                                Collected Revenue:
                             </Typography>
                             <Typography
                                 variant="h4"

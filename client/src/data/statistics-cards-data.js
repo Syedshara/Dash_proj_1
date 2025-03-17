@@ -53,6 +53,7 @@ export const statisticsCardsData = () => {
     const val = yesterdayKey ? "Yesterday :" : "Today :"
 
 
+
     return todayData
       ? [
         {
@@ -80,8 +81,8 @@ export const statisticsCardsData = () => {
         {
           color: "green",
           icon: BanknotesIcon,
-          title: "Total Revenue",
-          value: `${todayData.totalRevenue || "0"}`,
+          title: "Collected Revenue",
+          value: `${todayData.paidRevenue || "0"}`,
           footer: {
             color: "text-green-500",
             value: val,
